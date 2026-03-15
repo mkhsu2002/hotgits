@@ -1,7 +1,11 @@
 import React from 'react';
-import { TrendingUp, Github } from 'lucide-react';
+import { TrendingUp, Github, Settings } from 'lucide-react';
 
-export function Header() {
+interface HeaderProps {
+  onSettingsClick: () => void;
+}
+
+export function Header({ onSettingsClick }: HeaderProps) {
   return (
     <header className="sticky top-0 z-50 border-b border-white/5 bg-[#0A0A0A]/80 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -12,6 +16,13 @@ export function Header() {
           <h1 className="text-lg font-medium tracking-tight">GitTrend v0.2</h1>
         </div>
         <div className="flex items-center gap-4">
+          <button
+            onClick={onSettingsClick}
+            className="p-2 text-zinc-400 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+            title="API Settings"
+          >
+            <Settings className="w-5 h-5" />
+          </button>
           <a
             href="https://github.com"
             target="_blank"

@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { AlertCircle, Loader2, Code as CodeIcon } from 'lucide-react';
 import { useGithubTrending } from './hooks/useGithubTrending';
 import { Header } from './components/Header';
 import { Filters } from './components/Filters';
 import { RepoCard } from './components/RepoCard';
+import { ApiKeyModal } from './components/ApiKeyModal';
 import { TimeRange } from './services/github';
 
 const LANGUAGES = [
@@ -19,14 +20,32 @@ const LANGUAGES = [
   { value: 'ruby', label: 'Ruby' },
 ];
 
+const LOCAL_STORAGE_KEY = 'gemini_api_key';
+
 export default function App() {
   const [timeRange, setTimeRange] = useState<TimeRange>('weekly');
   const [language, setLanguage] = useState('all');
+  const [apiKey, setApiKey] = useState<string>('');
+  const [showApiModal, setShowApiModal] = useState(false);
   const { repos, loading, error, refresh } = useGithubTrending(timeRange, language);
+
+  useEffect(() => {
+    const savedKey = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (savedKey) {
+      setApiKey(savedKey);
+    } else {
+      setShowApiModal(true);
+    }
+  }, []);
+
+  const handleSaveApiKey = (newKey: string) => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, newKey);
+    setApiKey(newKey);
+  };
 
   return (
     <div className="min-h-screen bg-[#0A0A0A] text-zinc-100 font-sans selection:bg-emerald-500/30">
-      <Header />
+      <Header onSettingsClick={() => setShowApiModal(true)} />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Filters
@@ -94,6 +113,13 @@ export default function App() {
           </AnimatePresence>
         </div>
       </main>
+
+      <ApiKeyModal
+        isOpen={showApiModal}
+        onClose={() => setShowApiModal(false)}
+        onSave={handleSaveApiKey}
+        initialValue={apiKey}
+      />
     </div>
   );
 }
