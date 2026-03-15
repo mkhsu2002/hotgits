@@ -15,6 +15,11 @@ export interface GithubRepo {
   created_at: string;
   updated_at: string;
   topics: string[];
+  license: {
+    name: string;
+    spdx_id: string;
+  } | null;
+  open_issues_count: number;
 }
 
 export interface GithubSearchResponse {
