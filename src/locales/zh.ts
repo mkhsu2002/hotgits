@@ -2,7 +2,7 @@ import { Translations } from './en';
 
 export const zh: Translations = {
   header: {
-    title: 'hotgits',
+    title: 'Hot GitHub Repos v0.5',
     subtitle: '使用 AI 追蹤 GitHub 熱門趨勢',
     settings: '設定'
   },

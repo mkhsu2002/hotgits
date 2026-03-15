@@ -1,6 +1,6 @@
 export const en = {
   header: {
-    title: 'hotgits',
+    title: 'Hot GitHub Repos v0.5',
     subtitle: 'Track GitHub Trends with AI',
     settings: 'Settings'
   },
