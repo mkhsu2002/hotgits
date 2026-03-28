@@ -22,6 +22,10 @@ export function RepoCard({ repo, index, apiKey, isBookmarked, onToggleBookmark }
   const isAnalyzing = loading[repo.id];
   const analysisError = error[repo.id];
 
+  const openRepo = () => {
+    window.open(repo.html_url, '_blank', 'noopener,noreferrer');
+  };
+
   const handleAnalyze = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -38,16 +42,18 @@ export function RepoCard({ repo, index, apiKey, isBookmarked, onToggleBookmark }
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
-      className="group relative flex flex-col p-5 rounded-3xl bg-zinc-900/40 border border-white/5 hover:bg-zinc-800/60 hover:border-emerald-500/30 transition-all duration-500 shadow-xl overflow-hidden"
+      role="link"
+      tabIndex={0}
+      onClick={openRepo}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openRepo();
+        }
+      }}
+      className="group relative flex flex-col p-5 rounded-3xl bg-zinc-900/40 border border-white/5 hover:bg-zinc-800/60 hover:border-emerald-500/30 transition-all duration-500 shadow-xl overflow-hidden cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0A]"
     >
-      <a
-        href={repo.html_url}
-        target="_blank"
-        rel="noreferrer"
-        className="absolute inset-0 z-0"
-      />
-      
-      <div className="relative z-10 flex flex-col h-full">
+      <div className="relative flex flex-col h-full">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-3">
             <img
